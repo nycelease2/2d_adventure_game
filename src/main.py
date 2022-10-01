@@ -1,4 +1,5 @@
 #!/bin/python3
+import items
 running = True
 
 
@@ -12,6 +13,8 @@ class player:
         self.xVel = xVel
         self.yVel = yVel
         self.movementSpeed = movementSpeed
+        self.inventory = {"knife": 0, "meat":0, "pistol":0}
+        self.maxweightCarry = 100
 
     def draw(self):
         self.x += self.xVel
@@ -28,60 +31,6 @@ class player:
             self.y = HIGHT-self.ySize
 
         pygame.draw.rect(screen, self.color, pygame.Rect(self.x, self.y, self.xSize, self.ySize))
-
-#scene setup
-class sceneBase:
-   def __init__(self):
-       self.next = self
-
-   def ProcessInput(self, events):
-       print("processInput")
-   def update(self):
-       print("update")
-   def render(self, screen):
-       print("render")
-   def switchToNextScreen(self, next_scene):
-       self.next = next_scene
-
-class gameScene(sceneBase):
-    def __init__(self):
-        sceneBase.__init__(self)
-    def ProcessInput(self, player1,pressed_keys):
-        #pressed
-        #x axis
-        if pressed_keys[pygame.K_a]:
-            player1.xVel -= player1.movementSpeed
-        if pressed_keys[pygame.K_d]:
-            player1.xVel += player1.movementSpeed
-
-        #Y axis
-        if pressed_keys[pygame.K_w]:
-            player1.yVel -= player1.movementSpeed
-        if pressed_keys[pygame.K_s]:
-            player1.yVel += player1.movementSpeed
-
-        #unpressed
-        #X axis
-        if not pressed_keys[pygame.K_a]:
-            player1.xVel = 0
-        if not pressed_keys[pygame.K_d]:
-            player1.xVel = 0
-
-        #Y axis
-        if not pressed_keys[pygame.K_w]:
-            player1.yVel = 0
-        if not pressed_keys[pygame.K_s]:
-            player1.yVel = 0
-    def update(self):
-        pass
-    def render(self, player1):
-        player1.draw()
-
-
-
-def debug(player1):
-    print("x",player1.x)
-    print("y",player1.y)
 
 #variables
 AQUA = ( 0, 255, 255)
@@ -102,28 +51,69 @@ WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 BG = (30,30,30)
 
-player1 = player(10,10,BLUE, 50, 50, 0, 0, 1)
+player1 = player(10,10,BLUE, 50, 50, 0, 0, 0.1)
+
+visibleSprites=[player1]
+def updateScreen(visibleSprites):
+    for i in visibleSprites:
+        i.draw()
 
 #pygame setup
 import pygame
 
+def debug(player1):
+    print(player1.inventory)
+
 if __name__ == "__main__":
-    active_scene = gameScene()
     HIGHT = 700
     WIDTH = 700
     pygame.init()
     screen = pygame.display.set_mode((HIGHT, WIDTH))
     pygame.display.set_caption("Game")
     while running:#gameloop
-        pressed_keys=pygame.key.get_pressed()
         #event handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-        active_scene.ProcessInput(player1, pressed_keys)
-        active_scene.update()
-        active_scene.render(player1)
-        # debug(player1)
+
+            #controls
+            if event.type == pygame.KEYDOWN:
+                #X axis
+                if event.key == pygame.K_a:
+                    player1.xVel -= player1.movementSpeed
+                if event.key == pygame.K_d:
+                    player1.xVel += player1.movementSpeed
+
+                #Y axis
+                if event.key == pygame.K_w:
+                    player1.yVel -= player1.movementSpeed
+                if event.key == pygame.K_s:
+                    player1.yVel += player1.movementSpeed
+
+                #testing
+                if event.key == pygame.K_SPACE:
+                    items.knife.obtain(player1)
+
+                if event.key == pygame.K_f:
+                    items.pistol.obtain(player1) 
+
+            if event.type == pygame.KEYUP:
+                #X axis
+                if event.key == pygame.K_a:
+                    player1.xVel = 0
+                if event.key == pygame.K_d:
+                    player1.xVel = 0
+
+                #Y axis
+                if event.key == pygame.K_w:
+                    player1.yVel = 0
+                if event.key == pygame.K_s:
+                    player1.yVel = 0
+
         
+        screen.fill(BG)
+        updateScreen(visibleSprites)
+        player1.draw()
         pygame.display.update()
+        debug(player1)
