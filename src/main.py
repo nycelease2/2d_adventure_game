@@ -15,6 +15,7 @@ class player:
         self.movementSpeed = movementSpeed
         self.inventory = {"knife": 0, "meat":0, "pistol":0}
         self.maxweightCarry = 100
+        self.sprite = None
 
     def draw(self, screen):
         self.x += self.xVel
@@ -30,7 +31,7 @@ class player:
         if self.y > HIGHT-self.ySize:
             self.y = HIGHT-self.ySize
 
-        pygame.draw.rect(screen, self.color, pygame.Rect(self.x, self.y, self.xSize, self.ySize))
+        self.sprite = pygame.draw.rect(screen, self.color, pygame.Rect(self.x, self.y, self.xSize, self.ySize))
 
 #variables
 AQUA = ( 0, 255, 255)
@@ -60,6 +61,10 @@ def updateScreen(visibleSprites):
 
 #pygame setup
 import pygame
+
+def itemGetCheck(itemtocheck, player1):
+    if pygame.Rect.colliderect(itemtocheck.sprite, player1.sprite):
+        itemtocheck.obtain(player1)
 
 def debug(player1):
     print(player1.inventory)
@@ -91,13 +96,6 @@ if __name__ == "__main__":
                 if event.key == pygame.K_s:
                     player1.yVel += player1.movementSpeed
 
-                #testing
-                if event.key == pygame.K_SPACE:
-                    items.knife.obtain(player1)
-
-                if event.key == pygame.K_f:
-                    items.pistol.obtain(player1) 
-
             if event.type == pygame.KEYUP:
                 #X axis
                 if event.key == pygame.K_a:
@@ -114,5 +112,6 @@ if __name__ == "__main__":
         
         screen.fill(BG)
         updateScreen(visibleSprites)
+        itemGetCheck(PISTOL, player1)
         pygame.display.update()
         debug(player1)
