@@ -16,7 +16,7 @@ class player:
         self.inventory = {"knife": 0, "meat":0, "pistol":0}
         self.maxweightCarry = 100
 
-    def draw(self):
+    def draw(self, screen):
         self.x += self.xVel
         self.y += self.yVel
 
@@ -52,11 +52,11 @@ YELLOW = (255, 255, 0)
 BG = (30,30,30)
 
 player1 = player(10,10,BLUE, 50, 50, 0, 0, 0.1)
-
-visibleSprites=[player1]
+PISTOL = items.pistol(100, 70)
+visibleSprites=[player1, PISTOL]
 def updateScreen(visibleSprites):
     for i in visibleSprites:
-        i.draw()
+        i.draw(screen)
 
 #pygame setup
 import pygame
@@ -114,6 +114,5 @@ if __name__ == "__main__":
         
         screen.fill(BG)
         updateScreen(visibleSprites)
-        player1.draw()
         pygame.display.update()
         debug(player1)
