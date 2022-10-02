@@ -10,9 +10,9 @@ class knife:
         self.weight = 1
         self.stackability = 1
         self.sprite = None
-    def obtain(player1):
+    def obtain(self, player1):
         player1.inventory["knife"] = 1
-    def spawn(self, screen):
+    def draw(self, screen):
         self.sprite = pygame.draw.rect(screen, (0,0,0), pygame.Rect(self.x,self.y, 30,30))
 
 class meat:
@@ -23,10 +23,10 @@ class meat:
         self.weight = 3
         self.stackability = 30
         self.sprite = None
-    def obtain(player1):
+    def obtain(self, player1):
         player1.inventory["meat"] = 30
 
-    def spawn(self, screen):
+    def draw(self, screen):
        self.sprite = pygame.draw.rect(screen, (255,0,0), pygame.Rect(self.x,self.y, 30,30))
 
 class pistol:

@@ -52,9 +52,15 @@ WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 BG = (30,30,30)
 
-player1 = player(10,10,BLUE, 50, 50, 0, 0, 0.1)
+#items intialization
 PISTOL = items.pistol(100, 70)
-visibleSprites=[player1, PISTOL]
+MEAT = items.meat(400,500)
+KNIFE = items.knife(500,300)
+
+item = [PISTOL, MEAT,KNIFE]
+
+player1 = player(10,10,BLUE, 50, 50, 0, 0, 0.1)
+visibleSprites=[player1, PISTOL, KNIFE, MEAT]
 def updateScreen(visibleSprites):
     for i in visibleSprites:
         i.draw(screen)
@@ -112,6 +118,7 @@ if __name__ == "__main__":
         
         screen.fill(BG)
         updateScreen(visibleSprites)
-        itemGetCheck(PISTOL, player1)
+        for i in item:
+            itemGetCheck(i, player1)
         pygame.display.update()
         debug(player1)
