@@ -59,7 +59,7 @@ KNIFE = items.knife(500,300)
 
 item = [PISTOL, MEAT,KNIFE]
 
-player1 = player(10,10,BLUE, 50, 50, 0, 0, 0.1)
+player1 = player(10,10,BLUE, 50, 50, 0, 0, 0.3)
 visibleSprites=[player1, PISTOL, KNIFE, MEAT]
 def updateScreen(visibleSprites):
     for i in visibleSprites:
@@ -81,6 +81,7 @@ if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((HIGHT, WIDTH))
     pygame.display.set_caption("Game")
+    clock = pygame.time.Clock()
     while running:#gameloop
         #event handling
         for event in pygame.event.get():
@@ -122,3 +123,4 @@ if __name__ == "__main__":
             itemGetCheck(i, player1)
         pygame.display.update()
         debug(player1)
+        clock.tick(500)
