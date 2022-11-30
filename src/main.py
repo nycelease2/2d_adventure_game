@@ -84,6 +84,8 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((HIGHT, WIDTH))
     pygame.display.set_caption("Game")
     clock = pygame.time.Clock()
-    scenesList=[scenes.MainGame]
+    scenesList=[scenes.MainGame, scenes.MainMenu]
+    curscreen = scenesList[0]
     running = True
-    scenes.MainGame(pygame, player1, screen, colors, item, visibleSprites, clock)
+    while running:
+        curscreen(pygame, player1, screen, colors, item, visibleSprites, clock, curscreen, scenesList)
