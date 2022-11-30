@@ -76,7 +76,6 @@ def debug(player1):
     print(player1.inventory)
 
 
-
 if __name__ == "__main__":
     HIGHT = 700
     WIDTH = 700
@@ -84,8 +83,10 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((HIGHT, WIDTH))
     pygame.display.set_caption("Game")
     clock = pygame.time.Clock()
-    scenesList=[scenes.MainGame, scenes.MainMenu]
+    scenesList = []
+    curscreen = None
+    scenesList=[scenes.MainGame(curscreen, scenesList, player1, screen, clock, item, visibleSprites), scenes.MainMenu(curscreen, scenesList, colors, visibleSprites, screen)]
     curscreen = scenesList[0]
     running = True
     while running:
-        curscreen(pygame, player1, screen, colors, item, visibleSprites, clock, curscreen, scenesList)
+        curscreen()
