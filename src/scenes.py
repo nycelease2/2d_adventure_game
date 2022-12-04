@@ -1,7 +1,7 @@
 import pygame
 
-def MainGame(curscreen, scenesList, player1, screen, clock, item, visibleSprites):#main game scene
-    while curscreen == scenesList[0]:#main gameloop
+def MainGame(sceneManagment, colors, player1, screen, clock, item, visibleSprites, updateScreen, itemGetCheck, debug):#main game scene
+    while sceneManagment.curscreen == sceneManagment.sceneList[0]:#main gameloop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -24,7 +24,7 @@ def MainGame(curscreen, scenesList, player1, screen, clock, item, visibleSprites
                 #MainMenu
                 elif event.key == pygame.K_ESCAPE:
                     print("Main Menu Starting")
-                    curscreen = scenesList[1]
+                    sceneManagment.gotoscene(1)
 
             elif event.type == pygame.KEYUP:
                 #X axis
@@ -44,11 +44,12 @@ def MainGame(curscreen, scenesList, player1, screen, clock, item, visibleSprites
         for i in item:
             itemGetCheck(i, player1)
         pygame.display.update()
-        # debug(player1)
+        #debug(player1)
         clock.tick(500)
 
-def MainMenu(curscreen, scenesList, colors, visibleSprites, screen):
-    while curscreen==scenesList[1]:
+def MainMenu(sceneManagment, colors, visibleSprites, screen, updateScreen, clock):
+    print("i ran")
+    while sceneManagment.curscreen == sceneManagment.sceneList[1]:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

@@ -32,6 +32,19 @@ class player:
 
         self.sprite = pygame.draw.rect(screen, self.color, pygame.Rect(self.x, self.y, self.xSize, self.ySize))
 
+class sceneManager:
+    def __init__(self, sceneListOUT):
+        self.sceneList = sceneListOUT
+        self.curscreen = self.sceneList[0]
+    
+    def gotoscene(self, sceneID):
+        print("changing")
+        self.curscreen = self.sceneList[sceneID]
+        
+    
+    def update(self):
+        self.curscreen()
+
 #variables
 colors={
         "AQUA": ( 0, 255, 255),
@@ -57,10 +70,13 @@ PISTOL = items.pistol(100, 70)
 MEAT = items.meat(400,500)
 KNIFE = items.knife(500,300)
 
+
 item = [PISTOL, MEAT,KNIFE]
 
 player1 = player(10,10,colors["BLUE"], 50, 50, 0, 0, 0.3)
 visibleSprites=[player1, PISTOL, KNIFE, MEAT]
+
+
 def updateScreen(visibleSprites, screen):
     for i in visibleSprites:
         i.draw(screen)
@@ -83,10 +99,10 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((HIGHT, WIDTH))
     pygame.display.set_caption("Game")
     clock = pygame.time.Clock()
-    scenesList = []
-    curscreen = None
-    scenesList=[scenes.MainGame(curscreen, scenesList, player1, screen, clock, item, visibleSprites), scenes.MainMenu(curscreen, scenesList, colors, visibleSprites, screen)]
-    curscreen = scenesList[0]
     running = True
-    while running:
-        curscreen()
+    sceneManagement = sceneManager([0, 1])
+    sceneListOUT = [scenes.MainGame(sceneManagement, colors, player1, screen, clock, item, visibleSprites, updateScreen, itemGetCheck, debug), scenes.MainMenu(sceneManagement, colors, visibleSprites, screen, updateScreen, clock)]
+    sceneManagement.sceneList = sceneListOUT
+    sceneManagement.curscreen = sceneManagement.sceneList[0]
+    
+    sceneManagement.update
